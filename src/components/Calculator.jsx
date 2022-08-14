@@ -49,8 +49,14 @@ export default function Calculator(){
             setValue((parseFloat(firstValue) * parseFloat(value)).toFixed(2));
         }
         if (operation === "division"){
-            setResult((parseFloat(firstValue) / parseFloat(value)).toFixed(2));
-            setValue((parseFloat(firstValue) / parseFloat(value)).toFixed(2));
+            if((parseFloat(firstValue) % parseFloat(value)) === 0)
+            {
+                setResult((parseFloat(firstValue) / parseFloat(value)));
+                setValue((parseFloat(firstValue) / parseFloat(value)));
+            } else{
+                setResult((parseFloat(firstValue) / parseFloat(value)).toFixed(5));
+                setValue((parseFloat(firstValue) / parseFloat(value)).toFixed(5));
+            }
         }
     };
 
@@ -87,9 +93,9 @@ export default function Calculator(){
                     <button onClick={inputNum} value={5}>5</button>
                     <button onClick={inputNum} value={6}>6</button>
                     <button onClick={() => setOperation("minus")} className="orange">-</button>
-                    <button onClick={inputNum} value={3}>3</button>
-                    <button onClick={inputNum} value={2}>2</button>
                     <button onClick={inputNum} value={1}>1</button>
+                    <button onClick={inputNum} value={2}>2</button>
+                    <button onClick={inputNum} value={3}>3</button>
                     <button onClick={() => setOperation("plus")}className="orange">+</button>
                     <button onClick={inputNum} value={0}className="double">0</button>
                     <button onClick={inputNum} value={"."}>,</button>
