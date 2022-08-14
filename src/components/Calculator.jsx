@@ -6,17 +6,21 @@ import { Box } from "@mui/system";
 export default function Calculator(){
 
     const [value, setValue] = useState(0);
-    const [aux, setAux] = useState(0);
-    const [aux2, setAux2] = useState("");
-    const [result, setResult] = useState("0");
+    const [firstValue, setFirstValue] = useState("");
+    const [result, setResult] = useState(0);
     const [operation, setOperation] = useState("");
-    const [isComma, setIsComma] = useState(false);
 
     console.log("value: ", value);
-    console.log("isComma: ", isComma);
+    const inputNum = (e) => {
+        if (value > 0){
+            setValue(value + e.target.value);
+        } else {
+            setValue(e.target.value);
+        }
+    };
     useEffect(
         () => {
-            setAux(value);
+            setFirstValue(value);
             setValue(0);
         },
         [operation]
@@ -24,37 +28,35 @@ export default function Calculator(){
 
     useEffect(
         () => {
-            if(value != 0){
-                if(isComma){
-                    setResult(`${aux2}` + `,${value}`);
-                    setValue(parseFloat(`${aux2}` + `,${value}`));
-                    setIsComma(false);
-                } else{
-                    setResult(value);
-                }
+            if(value !== 0){
+                setResult(value);
             }
         },
         [value]
     );
 
     const calc = () => {
-        if (operation == "plus"){
-            setResult(aux + value);
+        if (operation === "plus"){
+            setResult((parseFloat(firstValue) + parseFloat(value)).toFixed(2));
+            setValue((parseFloat(firstValue) + parseFloat(value)).toFixed(2));
         }
-        if (operation == "minus"){
-            setResult(aux - value);
+        if (operation === "minus"){
+            setResult((parseFloat(firstValue) - parseFloat(value)).toFixed(2));
+            setValue((parseFloat(firstValue) - parseFloat(value)).toFixed(2));
         }
-        if (operation == "multiplication"){
-            setResult(aux * value);
+        if (operation === "multiplication"){
+            setResult((parseFloat(firstValue) * parseFloat(value)).toFixed(2));
+            setValue((parseFloat(firstValue) * parseFloat(value)).toFixed(2));
         }
-        if (operation == "division"){
-            setResult(aux / value);
+        if (operation === "division"){
+            setResult((parseFloat(firstValue) / parseFloat(value)).toFixed(2));
+            setValue((parseFloat(firstValue) / parseFloat(value)).toFixed(2));
         }
     };
 
     const clean = () => {
         setValue(0);
-        setAux(0);
+        setFirstValue(0);
         setResult(0);
         setOperation("");
     }
@@ -64,15 +66,8 @@ export default function Calculator(){
     }
 
     const percent = () => {
-        setResult(value/100);
+        setResult(value / 100);
     }
-
-    const comma = () => {
-        setResult(`${value},`);
-        setAux2(value);
-        setIsComma(true);
-    }
-
 
     return(
         <div>
@@ -84,20 +79,20 @@ export default function Calculator(){
                     <button onClick={() => invertValue()} className="gray">+/-</button>
                     <button onClick={() => percent()} className="gray">%</button>
                     <button onClick={() => setOperation("division")} className="orange">÷</button>
-                    <button onClick={() => setValue(7)}>7</button>
-                    <button onClick={() => setValue(8)}>8</button>
-                    <button onClick={() => setValue(9)}>9</button>
+                    <button onClick={inputNum} value={7}>7</button>
+                    <button onClick={inputNum} value={8}>8</button>
+                    <button onClick={inputNum} value={9}>9</button>
                     <button onClick={() => setOperation("multiplication")} className="orange">x</button>
-                    <button onClick={() => setValue(4)}>4</button>
-                    <button onClick={() => setValue(5)}>5</button>
-                    <button onClick={() => setValue(6)}>6</button>
+                    <button onClick={inputNum} value={4}>4</button>
+                    <button onClick={inputNum} value={5}>5</button>
+                    <button onClick={inputNum} value={6}>6</button>
                     <button onClick={() => setOperation("minus")} className="orange">-</button>
-                    <button onClick={() => setValue(3)}>3</button>
-                    <button onClick={() => setValue(2)}>2</button>
-                    <button onClick={() => setValue(1)}>1</button>
+                    <button onClick={inputNum} value={3}>3</button>
+                    <button onClick={inputNum} value={2}>2</button>
+                    <button onClick={inputNum} value={1}>1</button>
                     <button onClick={() => setOperation("plus")}className="orange">+</button>
-                    <button onClick={() => setValue(0)} className="double">0</button>
-                    <button onClick={() => comma()}>,</button>
+                    <button onClick={inputNum} value={0}className="double">0</button>
+                    <button onClick={inputNum} value={"."}>,</button>
                     <button onClick={() => calc()} className="orange">=</button>
                 </div>
             </Container>
